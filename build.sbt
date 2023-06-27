@@ -12,13 +12,13 @@ ThisBuild / scalafixDependencies ++= Seq(
 
 ThisBuild / idePackagePrefix := Some("io.github.cakelier")
 
-ThisBuild / name := "scala-library-template"
+ThisBuild / name := "tuples-space-client"
 ThisBuild / organization := "io.github.cake-lier"
 ThisBuild / organizationName := "cake_lier"
 ThisBuild / scmInfo := Some(
   ScmInfo(
-    url("https://github.com/cake-lier/scala-library-template"),
-    "scm:git@github.com:cake-lier/scala-library-template.git"
+    url("https://github.com/cake-lier/tuples-space-client"),
+    "scm:git@github.com:cake-lier/tuples-space-client.git"
   )
 )
 ThisBuild / developers := List(
@@ -34,7 +34,7 @@ ThisBuild / licenses := List(
   "MIT" -> new URL("https://opensource.org/licenses/MIT")
 )
 ThisBuild / homepage := Some(
-  url("https://github.com/cake-lier/scala-library-template")
+  url("https://github.com/cake-lier/tuples-space-client")
 )
 ThisBuild / pomIncludeRepository := { _ => false }
 ThisBuild / publishMavenStyle := true
@@ -46,7 +46,7 @@ lazy val root = project
   .in(file("."))
   .enablePlugins(AutomateHeaderPlugin)
   .settings(
-    name := "scala-library-template",
+    name := "tuples-space-client",
     scalaVersion := "3.3.0",
     scalacOptions ++= Seq(
       "-deprecation",
