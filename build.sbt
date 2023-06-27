@@ -60,6 +60,12 @@ lazy val root = project
       circeCore,
       circeGeneric,
       circeParser,
+      akka,
+      akkaStream,
+      akkaHttp,
+      akkaStreamTestkit,
+      akkaHttpTestkit,
+      akkaTestkit,
       core
     ),
     wartremoverErrors ++= Warts.allBut(Wart.ImplicitParameter),
