@@ -56,7 +56,11 @@ lazy val root = project
     semanticdbVersion := scalafixSemanticdb.revision,
     libraryDependencies ++= Seq(
       scalactic,
-      scalatest
+      scalatest,
+      circeCore,
+      circeGeneric,
+      circeParser,
+      core
     ),
     wartremoverErrors ++= Warts.allBut(Wart.ImplicitParameter),
     version := "0.0.0",
