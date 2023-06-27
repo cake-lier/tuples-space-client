@@ -62,7 +62,14 @@ import tuples.space.response.*
 import tuples.space.response.Response.{ConnectionSuccessResponse, MergeSuccessResponse}
 import tuples.space.response.Serializers.given
 
-@SuppressWarnings(Array("org.wartremover.warts.Throw", "org.wartremover.warts.Var"))
+@SuppressWarnings(
+  Array(
+    "org.wartremover.warts.Throw",
+    "org.wartremover.warts.Var",
+    "scalafix:DisableSyntax.throw",
+    "scalafix:DisableSyntax.var"
+  )
+)
 class JsonTupleSpaceTest extends AnyFunSpec with BeforeAndAfterAll with Eventually {
 
   private var server: Option[Http.ServerBinding] = None
