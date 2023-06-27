@@ -66,6 +66,7 @@ import tuples.space.response.Serializers.given
   Array(
     "org.wartremover.warts.Throw",
     "org.wartremover.warts.Var",
+    "org.wartremover.warts.Nothing",
     "scalafix:DisableSyntax.throw",
     "scalafix:DisableSyntax.var"
   )
