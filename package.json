@@ -1,0 +1,27 @@
+{
+  "name": "scala-library-template",
+  "version": "0.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cake-lier/scala-library-template.git"
+  },
+  "author": "",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/cake-lier/scala-library-template/issues"
+  },
+  "homepage": "https://github.com/cake-lier/scala-library-template#readme",
+  "dependencies": {
+    "@google/semantic-release-replace-plugin": "1.2.0",
+    "@semantic-release/changelog": "6.0.3",
+    "@semantic-release/exec": "6.0.3",
+    "@semantic-release/git": "10.0.1",
+    "conventional-changelog-conventionalcommits": "6.1.0",
+    "semantic-release": "21.0.5"
+  }
+}
