@@ -403,6 +403,17 @@ class JsonTupleSpaceTest extends AnyFunSpec with BeforeAndAfterAll with Eventual
       }
     }
 
+    describe("when an outAll operation is issued") {
+      it("should complete with success") {
+        val client: JsonTupleSpace = Await.result(JsonTupleSpace("ws://localhost:8080/"), Integer.MAX_VALUE.seconds)
+        val result: Future[Unit] = client.outAll(tuple)
+        eventually(Timeout(Span(10, Seconds))) {
+          result.value.value.success.value
+        } shouldBe ()
+        Await.result(client.close(), 10.seconds)
+      }
+    }
+
     describe("when a disconnection occurs") {
       it("should reconnect with success, asking for its old client id") {
         val client: JsonTupleSpace = Await.result(JsonTupleSpace("ws://localhost:8080/"), Integer.MAX_VALUE.seconds)
