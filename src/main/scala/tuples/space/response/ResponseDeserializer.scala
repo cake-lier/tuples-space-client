@@ -24,24 +24,15 @@ package tuples.space.response
 
 import io.circe.Decoder
 import io.circe.DecodingFailure
-import io.circe.Encoder
-import io.circe.Json
 import io.circe.syntax.*
 
 import AnyOps.*
 import tuples.space.*
 import tuples.space.JsonSerializable.given
 
-object Serializers {
+object ResponseDeserializer {
 
-  given Encoder[TupleResponse] = r =>
-    Json.obj(
-      "request" -> r.request.asJson,
-      "type" -> "out".asJson,
-      "content" -> ().asJson
-    )
-
-  given Decoder[TupleResponse] = c =>
+  private given Decoder[TupleResponse] = c =>
     for {
       request <- c.downField("request").as[JsonTuple]
       _ <- c
@@ -57,14 +48,7 @@ object Serializers {
       _ <- c.downField("content").as[Unit]
     } yield TupleResponse(request)
 
-  given Encoder[SeqTupleResponse] = r =>
-    Json.obj(
-      "request" -> r.request.asJson,
-      "type" -> "outAll".asJson,
-      "content" -> ().asJson
-    )
-
-  given Decoder[SeqTupleResponse] = c =>
+  private given Decoder[SeqTupleResponse] = c =>
     for {
       request <- c.downField("request").as[Seq[JsonTuple]]
       _ <- c
@@ -80,17 +64,7 @@ object Serializers {
       _ <- c.downField("content").as[Unit]
     } yield SeqTupleResponse(request)
 
-  given Encoder[TemplateTupleResponse] = r =>
-    Json.obj(
-      "request" -> r.request.asJson,
-      "type" -> (r.tpe match {
-        case TemplateTupleResponseType.In => "in"
-        case TemplateTupleResponseType.Rd => "rd"
-      }).asJson,
-      "content" -> r.content.asJson
-    )
-
-  given Decoder[TemplateTupleResponse] = c =>
+  private given Decoder[TemplateTupleResponse] = c =>
     for {
       request <- c.downField("request").as[JsonTemplate]
       tpe <- c.downField("type").as[String].flatMap {
@@ -107,17 +81,7 @@ object Serializers {
       content <- c.downField("content").as[JsonTuple]
     } yield TemplateTupleResponse(request, tpe, content)
 
-  given Encoder[TemplateMaybeTupleResponse] = r =>
-    Json.obj(
-      "request" -> r.request.asJson,
-      "type" -> (r.tpe match {
-        case TemplateMaybeTupleResponseType.Inp => "inp"
-        case TemplateMaybeTupleResponseType.Rdp => "rdp"
-      }).asJson,
-      "content" -> r.content.asJson
-    )
-
-  given Decoder[TemplateMaybeTupleResponse] = c =>
+  private given Decoder[TemplateMaybeTupleResponse] = c =>
     for {
       request <- c.downField("request").as[JsonTemplate]
       tpe <- c.downField("type").as[String].flatMap {
@@ -134,17 +98,7 @@ object Serializers {
       content <- c.downField("content").as[Option[JsonTuple]]
     } yield TemplateMaybeTupleResponse(request, tpe, content)
 
-  given Encoder[TemplateSeqTupleResponse] = r =>
-    Json.obj(
-      "request" -> r.request.asJson,
-      "type" -> (r.tpe match {
-        case TemplateSeqTupleResponseType.InAll => "inAll"
-        case TemplateSeqTupleResponseType.RdAll => "rdAll"
-      }).asJson,
-      "content" -> r.content.asJson
-    )
-
-  given Decoder[TemplateSeqTupleResponse] = c =>
+  private given Decoder[TemplateSeqTupleResponse] = c =>
     for {
       request <- c.downField("request").as[JsonTemplate]
       tpe <- c.downField("type").as[String].flatMap {
@@ -161,14 +115,7 @@ object Serializers {
       content <- c.downField("content").as[Seq[JsonTuple]]
     } yield TemplateSeqTupleResponse(request, tpe, content)
 
-  given Encoder[TemplateResponse] = r =>
-    Json.obj(
-      "request" -> r.request.asJson,
-      "type" -> "no".asJson,
-      "content" -> ().asJson
-    )
-
-  given Decoder[TemplateResponse] = c =>
+  private given Decoder[TemplateResponse] = c =>
     for {
       request <- c.downField("request").as[JsonTemplate]
       _ <- c
@@ -184,14 +131,7 @@ object Serializers {
       _ <- c.downField("content").as[Unit]
     } yield TemplateResponse(request)
 
-  given Encoder[TemplateBooleanResponse] = r =>
-    Json.obj(
-      "request" -> r.request.asJson,
-      "type" -> "nop".asJson,
-      "content" -> r.content.asJson
-    )
-
-  given Decoder[TemplateBooleanResponse] = c =>
+  private given Decoder[TemplateBooleanResponse] = c =>
     for {
       request <- c.downField("request").as[JsonTemplate]
       _ <- c
@@ -207,33 +147,10 @@ object Serializers {
       content <- c.downField("content").as[Boolean]
     } yield TemplateBooleanResponse(request, content)
 
-  given Encoder[ConnectionSuccessResponse] = r =>
-    Json.obj(
-      "clientId" -> r.clientId.asJson
-    )
+  private given Decoder[ConnectionSuccessResponse] = Decoder.forProduct1("clientId")(ConnectionSuccessResponse.apply)
 
-  given Decoder[ConnectionSuccessResponse] = Decoder.forProduct1("clientId")(ConnectionSuccessResponse.apply)
-
-  given Encoder[MergeSuccessResponse] = r =>
-    Json.obj(
-      "newClientId" -> r.newClientId.asJson,
-      "oldClientId" -> r.oldClientId.asJson
-    )
-
-  given Decoder[MergeSuccessResponse] =
+  private given Decoder[MergeSuccessResponse] =
     Decoder.forProduct2("newClientId", "oldClientId")(MergeSuccessResponse.apply)
-
-  given Encoder[Response] = {
-    case r: TupleResponse => r.asJson
-    case r: SeqTupleResponse => r.asJson
-    case r: TemplateTupleResponse => r.asJson
-    case r: TemplateResponse => r.asJson
-    case r: TemplateBooleanResponse => r.asJson
-    case r: TemplateMaybeTupleResponse => r.asJson
-    case r: TemplateSeqTupleResponse => r.asJson
-    case r: ConnectionSuccessResponse => r.asJson
-    case r: MergeSuccessResponse => r.asJson
-  }
 
   given Decoder[Response] = r =>
     r.as[TupleResponse]

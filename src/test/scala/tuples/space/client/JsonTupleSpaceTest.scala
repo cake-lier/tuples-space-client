@@ -56,11 +56,10 @@ import AnyOps.*
 import tuples.space.*
 import tuples.space.JsonTuple.JsonNil
 import tuples.space.request.*
-import tuples.space.request.Request.MergeRequest
-import tuples.space.request.Serializers.given
+import tuples.space.request.RequestDeserializer.given
 import tuples.space.response.*
 import tuples.space.response.Response.{ConnectionSuccessResponse, MergeSuccessResponse}
-import tuples.space.response.Serializers.given
+import tuples.space.response.ResponseSerializer.given
 
 @SuppressWarnings(
   Array(

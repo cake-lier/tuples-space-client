@@ -22,26 +22,16 @@
 package io.github.cakelier
 package tuples.space.request
 
-import io.circe.Decoder
-import io.circe.DecodingFailure
-import io.circe.Encoder
-import io.circe.Json
-import io.circe.syntax.*
-
-import tuples.space.*
+import tuples.space.request.*
+import tuples.space.{JsonTemplate, JsonTuple}
 import tuples.space.JsonSerializable.given
-import tuples.space.request.Request.MergeRequest
 import AnyOps.*
 
-object Serializers {
+import io.circe.{Decoder, DecodingFailure}
 
-  given Encoder[TupleRequest] = r =>
-    Json.obj(
-      "content" -> r.content.asJson,
-      "type" -> "out".asJson
-    )
+object RequestDeserializer {
 
-  given Decoder[TupleRequest] = c =>
+  private given Decoder[TupleRequest] = c =>
     for {
       content <- c.downField("content").as[JsonTuple]
       - <- c
@@ -56,13 +46,7 @@ object Serializers {
         )
     } yield TupleRequest(content)
 
-  given Encoder[SeqTupleRequest] = r =>
-    Json.obj(
-      "content" -> r.content.asJson,
-      "type" -> "outAll".asJson
-    )
-
-  given Decoder[SeqTupleRequest] = c =>
+  private given Decoder[SeqTupleRequest] = c =>
     for {
       content <- c.downField("content").as[Seq[JsonTuple]]
       - <- c
@@ -77,22 +61,7 @@ object Serializers {
         )
     } yield SeqTupleRequest(content)
 
-  given Encoder[TemplateRequest] = r =>
-    Json.obj(
-      "content" -> r.content.asJson,
-      "type" -> (r.tpe match {
-        case TemplateRequestType.In => "in"
-        case TemplateRequestType.Rd => "rd"
-        case TemplateRequestType.No => "no"
-        case TemplateRequestType.Inp => "inp"
-        case TemplateRequestType.Rdp => "rdp"
-        case TemplateRequestType.Nop => "nop"
-        case TemplateRequestType.InAll => "inAll"
-        case TemplateRequestType.RdAll => "rdAll"
-      }).asJson
-    )
-
-  given Decoder[TemplateRequest] = c =>
+  private given Decoder[TemplateRequest] = c =>
     for {
       content <- c.downField("content").as[JsonTemplate]
       tpe <- c.downField("type").as[String].flatMap {
@@ -114,20 +83,7 @@ object Serializers {
       }
     } yield TemplateRequest(content, tpe)
 
-  given Encoder[MergeRequest] = r =>
-    Json.obj(
-      "clientId" -> r.clientId.asJson,
-      "oldClientId" -> r.oldClientId.asJson
-    )
-
-  given Decoder[MergeRequest] = Decoder.forProduct2("clientId", "oldClientId")(MergeRequest.apply)
-
-  given Encoder[Request] = {
-    case r: TupleRequest => r.asJson
-    case r: TemplateRequest => r.asJson
-    case r: SeqTupleRequest => r.asJson
-    case r: MergeRequest => r.asJson
-  }
+  private given Decoder[MergeRequest] = Decoder.forProduct2("clientId", "oldClientId")(MergeRequest.apply)
 
   given Decoder[Request] = r =>
     r.as[TupleRequest]

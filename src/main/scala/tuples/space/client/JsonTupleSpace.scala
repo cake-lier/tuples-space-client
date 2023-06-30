@@ -55,9 +55,9 @@ import io.circe.syntax.*
 
 import tuples.space.*
 import tuples.space.request.*
-import tuples.space.request.Serializers.given
+import tuples.space.request.RequestSerializer.given
 import tuples.space.response.*
-import tuples.space.response.Serializers.given
+import tuples.space.response.ResponseDeserializer.given
 import AnyOps.*
 
 trait JsonTupleSpace {
@@ -162,7 +162,7 @@ object JsonTupleSpace {
             synchronized {
               clientId match {
                 case Some(id) =>
-                  queue.offer(TextMessage(MergeRequest(r.clientId, id).asJson.noSpaces)).foreach {
+                  queue.offer(TextMessage((MergeRequest(r.clientId, id): Request).asJson.noSpaces)).foreach {
                     case QueueOfferResult.Enqueued => ()
                     case QueueOfferResult.Dropped =>
                       connectionCompletion.failure(IllegalStateException("The request was dropped from its queue."))
