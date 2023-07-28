@@ -41,10 +41,10 @@ import tuples.space.*
   * used for carrying metadata from the client to the server, for example for managing the [[UUID]] that the server has given to
   * the client.
   */
-sealed trait Request
+private[client] sealed trait Request
 
 /** Companion object to the [[Request]] trait, containing its implementations. */
-object Request {
+private[client] object Request {
 
   /** A [[Request]] which content is a single [[JsonTuple]].
     *

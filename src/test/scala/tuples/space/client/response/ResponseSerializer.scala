@@ -25,8 +25,9 @@ package tuples.space.response
 import io.circe.Encoder
 import io.circe.Json
 import io.circe.syntax.EncoderOps
-
 import tuples.space.JsonSerializable.given
+
+import io.github.cakelier.tuples.space.client.response.{TemplateMaybeTupleResponseType, TemplateSeqTupleResponseType, TemplateTupleResponseType}
 
 object ResponseSerializer {
 

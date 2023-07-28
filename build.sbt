@@ -29,7 +29,7 @@ ThisBuild / developers := List(
     url = url("https://github.com/cake-lier")
   )
 )
-ThisBuild / description := ""
+ThisBuild / description := "A client for accessing a remote tuple space server, part of a tuple space middleware."
 ThisBuild / licenses := List(
   "MIT" -> new URL("https://opensource.org/licenses/MIT")
 )
@@ -41,6 +41,8 @@ ThisBuild / publishMavenStyle := true
 ThisBuild / versionScheme := Some("semver-spec")
 ThisBuild / publishTo := sonatypePublishToBundle.value
 ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
+
+ThisBuild / autoAPIMappings := true
 
 lazy val root = project
   .in(file("."))

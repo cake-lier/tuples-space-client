@@ -20,15 +20,32 @@
  */
 
 package io.github.cakelier
-package tuples.space.response
+package tuples.space.request
 
-/** The enum representing all the different types of operations that can receive a result using a [[TemplateMaybeTupleResponse]].
-  */
-enum TemplateMaybeTupleResponseType {
+/** The enum representing all the different types of operations that can be carried on using a [[TemplateRequest]]. */
+private[client] enum TemplateRequestType {
 
-  /** The enum instance representing the "inp" operation. */
-  case Inp extends TemplateMaybeTupleResponseType
+  /** The enum instance representing the "in" operation. */
+  case In extends TemplateRequestType
+
+    /** The enum instance representing the "rd" operation. */
+  case Rd extends TemplateRequestType
+
+    /** The enum instance representing the "no" operation. */
+  case No extends TemplateRequestType
+
+    /** The enum instance representing the "inp" operation. */
+  case Inp extends TemplateRequestType
 
     /** The enum instance representing the "rdp" operation. */
-  case Rdp extends TemplateMaybeTupleResponseType
+  case Rdp extends TemplateRequestType
+
+    /** The enum instance representing the "nop" operation. */
+  case Nop extends TemplateRequestType
+
+    /** The enum instance representing the "inAll" operation. */
+  case InAll extends TemplateRequestType
+
+    /** The enum instance representing the "rdAll" operation. */
+  case RdAll extends TemplateRequestType
 }

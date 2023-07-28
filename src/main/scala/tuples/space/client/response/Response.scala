@@ -37,10 +37,10 @@ import tuples.space.*
   * client, for example for signalling that the connection has been established with success and a new id is provided to the
   * client or that the client wants to use another id instead.
   */
-sealed trait Response
+private[response] sealed trait Response
 
 /** Companion object to the [[Response]] trait, containing its implementations. */
-object Response {
+private[response] object Response {
 
   /** A [[Response]] which associated request has as content a single [[JsonTuple]].
     *

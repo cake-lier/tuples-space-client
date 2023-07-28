@@ -31,7 +31,7 @@ import tuples.space.*
 import tuples.space.JsonSerializable.given
 
 /** This object contains all deserializers for the [[Response]] sub-types. */
-object ResponseDeserializer {
+private[space] object ResponseDeserializer {
 
   /* The Decoder given instance for the TupleResponse trait. */
   private given Decoder[TupleResponse] = c =>
