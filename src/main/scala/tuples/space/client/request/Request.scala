@@ -22,12 +22,15 @@
 package io.github.cakelier
 package tuples.space.client.request
 
-import tuples.space.*
-
-import io.circe.syntax.*
-import io.circe.{Decoder, DecodingFailure, Encoder, Json}
-
 import java.util.UUID
+
+import io.circe.Decoder
+import io.circe.DecodingFailure
+import io.circe.Encoder
+import io.circe.Json
+import io.circe.syntax.*
+
+import tuples.space.*
 
 /** A request that a [[io.github.cakelier.tuples.space.client.JsonTupleSpace]] can make to its server.
   *
@@ -38,7 +41,7 @@ import java.util.UUID
   * used for carrying metadata from the client to the server, for example for managing the [[UUID]] that the server has given to
   * the client.
   */
-private[client] sealed trait Request
+sealed private[client] trait Request
 
 /** Companion object to the [[Request]] trait, containing its implementations. */
 private[client] object Request {

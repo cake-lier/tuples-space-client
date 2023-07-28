@@ -22,12 +22,13 @@
 package io.github.cakelier
 package tuples.space.client.response
 
+import io.circe.Decoder
+import io.circe.DecodingFailure
+import io.circe.syntax.*
+
 import AnyOps.*
 import tuples.space.*
 import tuples.space.JsonSerializable.given
-
-import io.circe.{Decoder, DecodingFailure}
-import io.circe.syntax.*
 
 /** This object contains all deserializers for the [[Response]] sub-types. */
 private[client] object ResponseDeserializer {

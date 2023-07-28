@@ -22,9 +22,9 @@
 package io.github.cakelier
 package tuples.space.client.response
 
-import tuples.space.*
-
 import java.util.UUID
+
+import tuples.space.*
 
 /** A response that a [[io.github.cakelier.tuples.space.client.JsonTupleSpace]] can receive from its server.
   *
@@ -37,7 +37,7 @@ import java.util.UUID
   * client, for example for signalling that the connection has been established with success and a new id is provided to the
   * client or that the client wants to use another id instead.
   */
-private[client] sealed trait Response
+sealed private[client] trait Response
 
 /** Companion object to the [[Response]] trait, containing its implementations. */
 private[client] object Response {
@@ -324,8 +324,8 @@ private[client] object Response {
     * disconnection happens abruptly followed by an error, the server can keep the pending operations, but it will never know if
     * the client will reappear or not. This [[Response]] is sent from the server to confirm just that: the server is telling that
     * a client previously connected has now reconnected and its id is now the one given in the previously sent
-    * [[io.github.cakelier.tuples.space.request.Request]]. This way, the client can regain access to the
-    * [[Response]]s associated to the [[Request]]s placed before the disconnection.
+    * [[io.github.cakelier.tuples.space.request.Request]]. This way, the client can regain access to the [[Response]]s associated
+    * to the [[Request]]s placed before the disconnection.
     */
   sealed trait MergeSuccessResponse extends Response {
 

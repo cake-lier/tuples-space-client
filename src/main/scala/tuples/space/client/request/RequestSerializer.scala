@@ -22,12 +22,13 @@
 package io.github.cakelier
 package tuples.space.client.request
 
+import io.circe.Encoder
+import io.circe.Json
+import io.circe.syntax.*
+
 import AnyOps.*
 import tuples.space.*
 import tuples.space.JsonSerializable.given
-
-import io.circe.{Encoder, Json}
-import io.circe.syntax.*
 
 /** This object contains all serializers for the [[Request]] sub-types. */
 private[client] object RequestSerializer {
@@ -39,14 +40,14 @@ private[client] object RequestSerializer {
       "type" -> "out".asJson
     )
 
-  /* The Encoder given instance for the SeqTupleRequest trait. */
+    /* The Encoder given instance for the SeqTupleRequest trait. */
   private given Encoder[SeqTupleRequest] = r =>
     Json.obj(
       "content" -> r.content.asJson,
       "type" -> "outAll".asJson
     )
 
-  /* The Encoder given instance for the TemplateRequest trait. */
+    /* The Encoder given instance for the TemplateRequest trait. */
   private given Encoder[TemplateRequest] = r =>
     Json.obj(
       "content" -> r.content.asJson,
@@ -62,14 +63,14 @@ private[client] object RequestSerializer {
       }).asJson
     )
 
-  /* The Encoder given instance for the MergeRequest trait. */
+    /* The Encoder given instance for the MergeRequest trait. */
   private given Encoder[MergeRequest] = r =>
     Json.obj(
       "clientId" -> r.clientId.asJson,
       "oldClientId" -> r.oldClientId.asJson
     )
 
-  /** The [[Encoder]] given instance for the general [[Request]] trait, working for all of its sub-types. */
+    /** The [[Encoder]] given instance for the general [[Request]] trait, working for all of its sub-types. */
   given Encoder[Request] = {
     case r: TupleRequest => r.asJson
     case r: TemplateRequest => r.asJson
