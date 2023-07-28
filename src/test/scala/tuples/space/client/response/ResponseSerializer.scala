@@ -20,7 +20,7 @@
  */
 
 package io.github.cakelier
-package tuples.space.response
+package tuples.space.client.response
 
 import io.circe.Encoder
 import io.circe.Json

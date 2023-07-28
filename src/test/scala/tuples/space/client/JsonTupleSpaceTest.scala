@@ -54,12 +54,11 @@ import org.scalatest.time.Span
 
 import AnyOps.*
 import tuples.space.*
+import tuples.space.client.request.*
+import tuples.space.client.request.RequestDeserializer.given
+import tuples.space.client.response.*
+import tuples.space.client.response.ResponseSerializer.given
 import tuples.space.JsonTuple.JsonNil
-import tuples.space.request.*
-import tuples.space.request.RequestDeserializer.given
-import tuples.space.response.*
-import tuples.space.response.Response.{ConnectionSuccessResponse, MergeSuccessResponse}
-import tuples.space.response.ResponseSerializer.given
 
 @SuppressWarnings(
   Array(

@@ -20,12 +20,11 @@
  */
 
 package io.github.cakelier
-package tuples.space.request
+package tuples.space.client.request
 
 import io.circe.Decoder
 import io.circe.DecodingFailure
 
-import tuples.space.request.*
 import tuples.space.{JsonTemplate, JsonTuple}
 import tuples.space.JsonSerializable.given
 import AnyOps.*

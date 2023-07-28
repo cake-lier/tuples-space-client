@@ -20,10 +20,10 @@
  */
 
 package io.github.cakelier
-package tuples.space.response
+package tuples.space.client.response
 
 /** The enum representing all the different types of operations that can receive a result using a [[TemplateTupleResponse]]. */
-private[response] enum TemplateTupleResponseType {
+private[client] enum TemplateTupleResponseType {
 
   /** The enum instance representing the "in" operation. */
   case In extends TemplateTupleResponseType

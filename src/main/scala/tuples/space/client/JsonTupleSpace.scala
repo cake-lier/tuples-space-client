@@ -54,10 +54,10 @@ import io.circe.parser.*
 import io.circe.syntax.*
 
 import tuples.space.*
-import tuples.space.request.*
-import tuples.space.request.RequestSerializer.given
-import tuples.space.response.*
-import tuples.space.response.ResponseDeserializer.given
+import tuples.space.client.request.*
+import request.RequestSerializer.given
+import tuples.space.client.response.*
+import response.ResponseDeserializer.given
 import AnyOps.*
 
 /** A coordination medium to be used to exchange pieces of information and coordinate with other entities, implemented to be used

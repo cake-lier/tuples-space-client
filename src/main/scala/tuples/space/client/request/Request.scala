@@ -20,17 +20,14 @@
  */
 
 package io.github.cakelier
-package tuples.space.request
-
-import java.util.UUID
-
-import io.circe.Decoder
-import io.circe.DecodingFailure
-import io.circe.Encoder
-import io.circe.Json
-import io.circe.syntax.*
+package tuples.space.client.request
 
 import tuples.space.*
+
+import io.circe.syntax.*
+import io.circe.{Decoder, DecodingFailure, Encoder, Json}
+
+import java.util.UUID
 
 /** A request that a [[io.github.cakelier.tuples.space.client.JsonTupleSpace]] can make to its server.
   *

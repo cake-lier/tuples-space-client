@@ -20,10 +20,10 @@
  */
 
 package io.github.cakelier
-package tuples.space.response
+package tuples.space.client.response
 
 /** The enum representing all the different types of operations that can receive a result using a [[TemplateSeqTupleResponse]]. */
-private[response] enum TemplateSeqTupleResponseType {
+private[client] enum TemplateSeqTupleResponseType {
 
   /** The enum instance representing the "inAll" operation. */
   case InAll extends TemplateSeqTupleResponseType

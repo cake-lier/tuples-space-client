@@ -20,7 +20,7 @@
  */
 
 package io.github.cakelier
-package tuples.space.request
+package tuples.space.client.request
 
 /** The enum representing all the different types of operations that can be carried on using a [[TemplateRequest]]. */
 private[client] enum TemplateRequestType {

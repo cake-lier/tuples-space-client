@@ -20,15 +20,14 @@
  */
 
 package io.github.cakelier
-package tuples.space.request
+package tuples.space.client.request
 
-import io.circe.Encoder
-import io.circe.Json
-import io.circe.syntax.*
-
+import AnyOps.*
 import tuples.space.*
 import tuples.space.JsonSerializable.given
-import AnyOps.*
+
+import io.circe.{Encoder, Json}
+import io.circe.syntax.*
 
 /** This object contains all serializers for the [[Request]] sub-types. */
 private[client] object RequestSerializer {
