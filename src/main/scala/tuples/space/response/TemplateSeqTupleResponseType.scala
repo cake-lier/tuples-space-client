@@ -22,7 +22,12 @@
 package io.github.cakelier
 package tuples.space.response
 
+/** The enum representing all the different types of operations that can receive a result using a [[TemplateSeqTupleResponse]]. */
 enum TemplateSeqTupleResponseType {
+
+  /** The enum instance representing the "inAll" operation. */
   case InAll extends TemplateSeqTupleResponseType
+
+    /** The enum instance representing the "rdAll" operation. */
   case RdAll extends TemplateSeqTupleResponseType
 }

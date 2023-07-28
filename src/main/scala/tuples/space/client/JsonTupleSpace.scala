@@ -60,33 +60,178 @@ import tuples.space.response.*
 import tuples.space.response.ResponseDeserializer.given
 import AnyOps.*
 
+/** A coordination medium to be used to exchange pieces of information and coordinate with other entities, implemented to be used
+  * with [[JsonTuple]]s and [[JsonTemplate]]s.
+  *
+  * A "tuple space", in general, is what is called a coordination medium. It is a way to coordinate the entities that participate
+  * in its use. It is a way to exchange information, more specifically tuples and with this implementation [[JsonTuple]]s, and to
+  * coordinate the different actions of the entities. For a "tuple space", the coordination happens with the same operations that
+  * let to write and to read into the space. The basic operations, "in" and "rd", have a suspensive semantic, which means that
+  * their completion suspends until a tuple able to complete them is found in the space. In this way, similarly to the "future"
+  * data structure, the execution can be paused until the result is ready. Matching a tuple means to have a template to be used by
+  * the operation for matching, which in this implementation is a [[JsonTemplate]].
+  */
 trait JsonTupleSpace {
 
+  /** The operation for inserting a [[JsonTuple]] into this [[JsonTupleSpace]]. This is one of the core operations on the tuple
+    * space, along with "in" and "rd". Differently from these two, this operation is not suspensive: it completes right away,
+    * because it is always allowed to insert a new tuple into the space. A [[Future]] is still returned because the actual tuple
+    * space can be hosted on a remote host, meaning that the operation is in fact a network operation that takes time to complete.
+    * The future will complete signalling only the success of the operation.
+    *
+    * @param t
+    *   the [[JsonTuple]] to be inserted into this [[JsonTupleSpace]]
+    * @return
+    *   a [[Future]] which completes when the operation has completed
+    */
   def out(t: JsonTuple): Future[Unit]
 
+  /** The operation for reading a [[JsonTuple]] into this [[JsonTupleSpace]]. This is one of the core operations on the tuple
+    * space, along with "in" and "out". This is a suspensive operation, it will complete only when in the space a tuple matching
+    * the template of this operation is found. This also mean that the operation will not suspend at all, if a tuple is already
+    * inside the space. If multiple tuples matching the template are inside the space, one will be chosen randomly, following the
+    * "don't care" nondeterminism. The tuple matched is not removed from the tuple space. A [[Future]] is still returned because
+    * the actual tuple space can be hosted on a remote host, meaning that the operation is in fact a network operation that takes
+    * time to complete. The future will complete with the matched tuple.
+    *
+    * @param tt
+    *   the [[JsonTemplate]] to be used for matching a [[JsonTuple]] to be read in this [[JsonTupleSpace]]
+    * @return
+    *   a [[Future]] which completes when the operation has completed with the read [[JsonTuple]]
+    */
   def rd(tt: JsonTemplate): Future[JsonTuple]
 
+  /** The operation for taking a [[JsonTuple]] from this [[JsonTupleSpace]]. This is one of the core operations on the tuple
+    * space, along with "rd" and "out". This is a suspensive operation, it will complete only when in the space a tuple matching
+    * the template of this operation is found. This also mean that the operation will not suspend at all, if a tuple is already
+    * inside the space. If multiple tuples matching the template are inside the space, one will be chosen randomly, following the
+    * "don't care" nondeterminism. The tuple matched is then removed from the tuple space. A [[Future]] is still returned because
+    * the actual tuple space can be hosted on a remote host, meaning that the operation is in fact a network operation that takes
+    * time to complete. The future will complete with the matched tuple.
+    *
+    * @param tt
+    *   the [[JsonTemplate]] to be used for matching a [[JsonTuple]] to be taken in this [[JsonTupleSpace]]
+    * @return
+    *   a [[Future]] which completes when the operation has completed with the taken [[JsonTuple]]
+    */
   def in(tt: JsonTemplate): Future[JsonTuple]
 
+  /** The operation for checking if some [[JsonTuple]]s are not into this [[JsonTupleSpace]]. This is a suspensive operation, it
+    * will complete only when in the space no tuple matching the template of this operation is found. This also mean that the
+    * operation will not suspend at all, if no tuple is already inside the space. If multiple tuples matching the template are
+    * inside the space, only when the last one is removed the operation will complete. A [[Future]] is still returned because the
+    * actual tuple space can be hosted on a remote host, meaning that the operation is in fact a network operation that takes time
+    * to complete. The future will complete signalling only the success of the operation.
+    *
+    * @param tt
+    *   the [[JsonTemplate]] to be used for matching [[JsonTuple]]s which should not be in this [[JsonTupleSpace]]
+    * @return
+    *   a [[Future]] which completes when the operation has completed
+    */
   def no(tt: JsonTemplate): Future[Unit]
 
+  /** The operation for inserting multiple [[JsonTuple]]s into this [[JsonTupleSpace]]. This is the "bulk" version of the basic
+    * "out" operation. As for its basic counterpart, this operation is not suspensive: it completes right away, because it is
+    * always allowed to insert new tuples into the space. A [[Future]] is still returned because the actual tuple space can be
+    * hosted on a remote host, meaning that the operation is in fact a network operation that takes time to complete. The future
+    * will complete signalling only the success of the operation.
+    *
+    * @param ts
+    *   the [[JsonTuple]]s to be inserted into this [[JsonTupleSpace]]
+    * @return
+    *   a [[Future]] which completes when the operation has completed
+    */
   def outAll(ts: JsonTuple*): Future[Unit]
 
+  /** The operation for reading some [[JsonTuple]]s into this [[JsonTupleSpace]]. This is the "bulk" version of the basic "rd"
+    * operation. Differently from its basic counterpart, this is not a suspensive operation, if no tuples matching the given
+    * template are found, an empty [[Seq]] is returned. If multiple tuples matching the template are inside the space, all will be
+    * returned in a [[Seq]]. The tuples matched are not removed from the tuple space. A [[Future]] is still returned because the
+    * actual tuple space can be hosted on a remote host, meaning that the operation is in fact a network operation that takes time
+    * to complete. The future will complete with the matched tuples.
+    *
+    * @param tt
+    *   the [[JsonTemplate]] to be used for matching some [[JsonTuple]]s to be read in this [[JsonTupleSpace]]
+    * @return
+    *   a [[Future]] which completes when the operation has completed with the read [[JsonTuple]]s
+    */
   def rdAll(tt: JsonTemplate): Future[Seq[JsonTuple]]
 
+  /** The operation for taking some [[JsonTuple]]s from this [[JsonTupleSpace]]. This is the "bulk" version of the basic "in"
+    * operation. Differently from its basic counterpart, this is not a suspensive operation, if no tuples matching the given
+    * template are found, an empty [[Seq]] is returned. If multiple tuples matching the template are inside the space, all will be
+    * returned in a [[Seq]]. The tuples matched are removed from the tuple space. A [[Future]] is still returned because the
+    * actual tuple space can be hosted on a remote host, meaning that the operation is in fact a network operation that takes time
+    * to complete. The future will complete with the matched tuples.
+    *
+    * @param tt
+    *   the [[JsonTemplate]] to be used for matching some [[JsonTuple]]s to be taken from this [[JsonTupleSpace]]
+    * @return
+    *   a [[Future]] which completes when the operation has completed with the taken [[JsonTuple]]s
+    */
   def inAll(tt: JsonTemplate): Future[Seq[JsonTuple]]
 
+  /** The operation for reading a [[JsonTuple]] into this [[JsonTupleSpace]]. This is the "predicative" version of the basic "rd"
+    * operation: this means that it's not a suspensive operation. If no tuples matching the given template are found, a [[None]]
+    * is returned. If multiple tuples matching the template are inside the space, one will be chosen randomly, following the
+    * "don't care" nondeterminism. The tuple matched is not removed from the tuple space. A [[Future]] is still returned because
+    * the actual tuple space can be hosted on a remote host, meaning that the operation is in fact a network operation that takes
+    * time to complete. The future will complete with a [[Some]] containing the matched tuple, if any.
+    *
+    * @param tt
+    *   the [[JsonTemplate]] to be used for matching a [[JsonTuple]] to be read in this [[JsonTupleSpace]]
+    * @return
+    *   a [[Future]] which completes when the operation has completed with a [[Some]] containing the read [[JsonTuple]], if
+    *   present, a [[None]] otherwise
+    */
   def rdp(tt: JsonTemplate): Future[Option[JsonTuple]]
 
+  /** The operation for taking a [[JsonTuple]] from this [[JsonTupleSpace]]. This is the "predicative" version of the basic "in"
+    * operation: this means that it's not a suspensive operation. If no tuples matching the given template are found, a [[None]]
+    * is returned. If multiple tuples matching the template are inside the space, one will be chosen randomly, following the
+    * "don't care" nondeterminism. The tuple matched is then removed from the tuple space. A [[Future]] is still returned because
+    * the actual tuple space can be hosted on a remote host, meaning that the operation is in fact a network operation that takes
+    * time to complete. The future will complete with a [[Some]] containing the matched tuple, if any.
+    *
+    * @param tt
+    *   the [[JsonTemplate]] to be used for matching a [[JsonTuple]] to be taken from this [[JsonTupleSpace]]
+    * @return
+    *   a [[Future]] which completes when the operation has completed with a [[Some]] containing the taken [[JsonTuple]], if
+    *   present, a [[None]] otherwise
+    */
   def inp(tt: JsonTemplate): Future[Option[JsonTuple]]
 
+  /** The operation for checking if some [[JsonTuple]]s are not into this [[JsonTupleSpace]]. This is the "predicative" version of
+    * the basic "no" operation: this means that it's not a suspensive operation. If no tuples matching the given template are
+    * found, <code>true</code> is returned, otherwise <code>false</code> is returned. The tuples matched are not removed from the
+    * tuple space. A [[Future]] is still returned because the actual tuple space can be hosted on a remote host, meaning that the
+    * operation is in fact a network operation that takes time to complete. The future will complete with a boolean with the
+    * result of the operation.
+    *
+    * @param tt
+    *   the [[JsonTemplate]] to be used for matching [[JsonTuple]]s which should not be in this [[JsonTupleSpace]]
+    * @return
+    *   a [[Future]] which completes when the operation has completed with the result of the operation
+    */
   def nop(tt: JsonTemplate): Future[Boolean]
 
+  /** Closes the connection to the server. This operation is needed to correctly perform all clean up operations both in the
+    * client and in the server, to dispose of all resources used. It is fundamental to call this method, otherwise the closing of
+    * the application will lead to the server thinking that a disconnection occurred and it will retain all data about this
+    * client, littering its memory with not freed up resources. A [[Future]] is still returned because the actual tuple space can
+    * be hosted on a remote host, meaning that the operation is in fact a network operation that takes time to complete. The
+    * future will complete signalling only the success of the operation.
+    *
+    * @return
+    *   a [[Future]] which completes when the completion of the closing operation has occurred
+    */
   def close(): Future[Unit]
 }
 
+/** Companion object to the [[JsonTupleSpace]] trait, containing its factory method. */
 object JsonTupleSpace {
 
+  /* Implementation of the JsonTupleSpace trait. */
   @SuppressWarnings(
     Array(
       "org.wartremover.warts.MutableDataStructures",
@@ -299,6 +444,23 @@ object JsonTupleSpace {
     }
   }
 
+  /** Factory method for creating a new [[JsonTupleSpace]] client. It needs to be specified the URI of the host on which the
+    * server is hosted and the client must connect to. The format of the URI should be the URL one and the protocol for connection
+    * is the "websocket" one. Another optional parameter that can be specified is the size of the message buffer, which will be
+    * used for buffering messages while the connection is still not established or while the connection is interrupted and the
+    * client is trying to reconnect. As a "using" parameter an [[ActorSystem]] can be given if the default created one is not apt,
+    * because the implementation will use an "Akka HTTP Client" under the hood which uses actors for handling requests and
+    * responses. This method returns a [[Future]] signalling the completion of the connection operation to the server.
+    *
+    * @param uri
+    *   the URI of the server to which this client should connect to
+    * @param bufferSize
+    *   the size of the buffer used for keeping messages while the client is not connected to the server
+    * @param system
+    *   the [[ActorSystem]] to be used for instantiating the "Akka HTTP Client" used under the hood
+    * @return
+    *   a [[Future]] which its completion signals the established connection to the server
+    */
   @SuppressWarnings(Array("org.wartremover.warts.DefaultArguments", "scalafix:DisableSyntax.defaultArgs"))
   def apply(uri: String, bufferSize: Int = 1)(using system: ActorSystem = ActorSystem()): Future[JsonTupleSpace] = {
     import system.dispatcher

@@ -22,9 +22,13 @@
 package io.github.cakelier
 package tuples.space.response
 
+/** The enum representing all the different types of operations that can receive a result using a [[TemplateMaybeTupleResponse]].
+  */
 enum TemplateMaybeTupleResponseType {
 
+  /** The enum instance representing the "inp" operation. */
   case Inp extends TemplateMaybeTupleResponseType
 
+    /** The enum instance representing the "rdp" operation. */
   case Rdp extends TemplateMaybeTupleResponseType
 }

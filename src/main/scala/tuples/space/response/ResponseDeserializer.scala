@@ -30,8 +30,10 @@ import AnyOps.*
 import tuples.space.*
 import tuples.space.JsonSerializable.given
 
+/** This object contains all deserializers for the [[Response]] sub-types. */
 object ResponseDeserializer {
 
+  /* The Decoder given instance for the TupleResponse trait. */
   private given Decoder[TupleResponse] = c =>
     for {
       request <- c.downField("request").as[JsonTuple]
@@ -48,6 +50,7 @@ object ResponseDeserializer {
       _ <- c.downField("content").as[Unit]
     } yield TupleResponse(request)
 
+    /* The Decoder given instance for the SeqTupleResponse trait. */
   private given Decoder[SeqTupleResponse] = c =>
     for {
       request <- c.downField("request").as[Seq[JsonTuple]]
@@ -64,6 +67,7 @@ object ResponseDeserializer {
       _ <- c.downField("content").as[Unit]
     } yield SeqTupleResponse(request)
 
+    /* The Decoder given instance for the TemplateTupleResponse trait. */
   private given Decoder[TemplateTupleResponse] = c =>
     for {
       request <- c.downField("request").as[JsonTemplate]
@@ -81,6 +85,7 @@ object ResponseDeserializer {
       content <- c.downField("content").as[JsonTuple]
     } yield TemplateTupleResponse(request, tpe, content)
 
+    /* The Decoder given instance for the TemplateMaybeTupleResponse trait. */
   private given Decoder[TemplateMaybeTupleResponse] = c =>
     for {
       request <- c.downField("request").as[JsonTemplate]
@@ -98,6 +103,7 @@ object ResponseDeserializer {
       content <- c.downField("content").as[Option[JsonTuple]]
     } yield TemplateMaybeTupleResponse(request, tpe, content)
 
+    /* The Decoder given instance for the TemplateSeqTupleResponse trait. */
   private given Decoder[TemplateSeqTupleResponse] = c =>
     for {
       request <- c.downField("request").as[JsonTemplate]
@@ -115,6 +121,7 @@ object ResponseDeserializer {
       content <- c.downField("content").as[Seq[JsonTuple]]
     } yield TemplateSeqTupleResponse(request, tpe, content)
 
+    /* The Decoder given instance for the TemplateResponse trait. */
   private given Decoder[TemplateResponse] = c =>
     for {
       request <- c.downField("request").as[JsonTemplate]
@@ -131,6 +138,7 @@ object ResponseDeserializer {
       _ <- c.downField("content").as[Unit]
     } yield TemplateResponse(request)
 
+    /* The Decoder given instance for the TemplateBooleanResponse trait. */
   private given Decoder[TemplateBooleanResponse] = c =>
     for {
       request <- c.downField("request").as[JsonTemplate]
@@ -147,11 +155,14 @@ object ResponseDeserializer {
       content <- c.downField("content").as[Boolean]
     } yield TemplateBooleanResponse(request, content)
 
+    /* The Decoder given instance for the ConnectionSuccessResponse trait. */
   private given Decoder[ConnectionSuccessResponse] = Decoder.forProduct1("clientId")(ConnectionSuccessResponse.apply)
 
+  /* The Decoder given instance for the MergeSuccessResponse trait. */
   private given Decoder[MergeSuccessResponse] =
     Decoder.forProduct2("newClientId", "oldClientId")(MergeSuccessResponse.apply)
 
+    /** The [[Decoder]] given instance for the general [[Response]] trait, working for all of its sub-types. */
   given Decoder[Response] = r =>
     r.as[TupleResponse]
       .orElse(r.as[SeqTupleResponse])
