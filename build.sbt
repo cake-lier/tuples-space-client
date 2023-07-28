@@ -7,7 +7,7 @@ Global / excludeLintKeys := Set(idePackagePrefix)
 
 ThisBuild / scalafixDependencies ++= Seq(
   "io.github.ghostbuster91.scalafix-unified" %% "unified" % "0.0.9",
-  "net.pixiv" %% "scalafix-pixiv-rule" % "4.5.1"
+  "net.pixiv" %% "scalafix-pixiv-rule" % "4.5.3"
 )
 
 ThisBuild / idePackagePrefix := Some("io.github.cakelier")
