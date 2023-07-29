@@ -130,16 +130,17 @@ private[client] object Request {
     def apply(content: JsonTemplate, tpe: TemplateRequestType): TemplateRequest = TemplateRequestImpl(content, tpe)
   }
 
-  /** A [[Request]] to be sent to the server for re-assigning to itself its old client id.
+  /** A [[Request]] to be sent to the server for re-assigning to the client sending it its old client id.
     *
     * When the connection to the server goes down, after the client reconnects, the server has no knowledge of whether this client
-    * has already connected to it before or not. This is on purpose: it is always allowed for a client to purposefully connect to
-    * the server, disconnect and then reconnect again at a later point in time. All pending operations from the client are lost,
-    * because even if the client will reconnect, it would not be the same client from the server point of view. If the
-    * disconnection happens abruptly followed by an error, the server can keep the pending operations, but it will never know if
-    * the client will reappear or not. This [[Request]] is needed to do just that, to tell the server that a client previously
-    * connected has now reconnected and its old id was the one given. This way, it can regain access to the
-    * [[io.github.cakelier.tuples.space.response.Response]]s associated to the [[Request]]s placed before the disconnection.
+    * has already connected to it before or not. This is on purpose: it is always allowed for a program using a client to
+    * purposefully connect to the server, disconnect and then reconnect again with another client at a later point in time. All
+    * pending operations from the original client are lost, because it would not be the same client. If the disconnection happens
+    * abruptly followed by an error, the server keeps the pending operations, but it will never know if the client will reappear
+    * or not. This [[Request]] is needed to do just that, to tell the server that a client previously connected has now
+    * reconnected and its old id was the one given. This way, it can regain access to the
+    * [[io.github.cakelier.tuples.space.response.Response]]s associated to the [[Request]]s placed before the disconnection, if
+    * they where not satisfied during its absence.
     */
   sealed trait MergeRequest extends Request {
 

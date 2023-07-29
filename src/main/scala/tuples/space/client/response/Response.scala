@@ -318,14 +318,14 @@ private[client] object Response {
     * [[io.github.cakelier.tuples.space.request.Request]] its old client id.
     *
     * When the connection to the server goes down, after the client reconnects, the server has no knowledge of whether this client
-    * has already connected to it before or not. This is on purpose: it is always allowed for a client to purposefully connect to
-    * the server, disconnect and then reconnect again at a later point in time. All pending operations from the client are lost,
-    * because even if the client will reconnect, it would not be the same client from the server point of view. If the
-    * disconnection happens abruptly followed by an error, the server can keep the pending operations, but it will never know if
-    * the client will reappear or not. This [[Response]] is sent from the server to confirm just that: the server is telling that
-    * a client previously connected has now reconnected and its id is now the one given in the previously sent
+    * has already connected to it before or not. This is on purpose: it is always allowed for a program using a client to
+    * purposefully connect to the server, disconnect and then reconnect again with another client at a later point in time. All
+    * pending operations from the original client are lost, because it would not be the same client. If the disconnection happens
+    * abruptly followed by an error, the server keeps the pending operations, but it will never know if the client will reappear
+    * or not. This [[Response]] is sent from the server to confirm just that: the server is telling that a client previously
+    * connected has now reconnected and its id is now the one given in the previously sent
     * [[io.github.cakelier.tuples.space.request.Request]]. This way, the client can regain access to the [[Response]]s associated
-    * to the [[Request]]s placed before the disconnection.
+    * to the [[Request]]s placed before the disconnection, if they where not satisfied during its absence.
     */
   sealed trait MergeSuccessResponse extends Response {
 

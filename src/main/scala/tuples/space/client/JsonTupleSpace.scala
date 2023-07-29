@@ -244,6 +244,7 @@ object JsonTupleSpace {
   private class JsonTupleSpaceImpl(
     uri: String,
     bufferSize: Int,
+    exitOnClose: Boolean,
     completionPromise: Promise[Unit]
   )(
     using
@@ -440,7 +441,7 @@ object JsonTupleSpace {
 
     override def close(): Future[Unit] = {
       queue.complete()
-      flowCompletion.map(_ => ())
+      flowCompletion.flatMap(_ => if (exitOnClose) system.terminate().map(_ => ()) else Future.successful(()))
     }
   }
 
@@ -462,11 +463,18 @@ object JsonTupleSpace {
     *   a [[Future]] which its completion signals the established connection to the server
     */
   @SuppressWarnings(Array("org.wartremover.warts.DefaultArguments", "scalafix:DisableSyntax.defaultArgs"))
-  def apply(uri: String, bufferSize: Int = 1)(using system: ActorSystem = ActorSystem()): Future[JsonTupleSpace] = {
+  def apply(
+    uri: String,
+    bufferSize: Int = 1,
+    exitOnClose: Boolean = true
+  )(
+    using
+    system: ActorSystem = ActorSystem()
+  ): Future[JsonTupleSpace] = {
     import system.dispatcher
 
     val completionPromise: Promise[Unit] = Promise[Unit]()
-    val tupleSpace = JsonTupleSpaceImpl(uri, bufferSize, completionPromise)
+    val tupleSpace = JsonTupleSpaceImpl(uri, bufferSize, exitOnClose, completionPromise)
     completionPromise.future.map(_ => tupleSpace)
   }
 }
