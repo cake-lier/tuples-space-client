@@ -44,16 +44,16 @@ The operations that can be sent to the tuple space server are:
 
 | Operation name | Is it "suspensive"? | Is it "bulk"? | What does it do?               |
 |----------------|---------------------|---------------|--------------------------------|
-| out            | ❌                   | ❌             | Inserts a tuple                |
-| in             | ✔️                  | ❌             | Removes a tuple                |
-| rd             | ✔️                  | ❌             | Copies a tuple                 |
-| no             | ✔️                  | ❌             | Checks if tuples do not exists |
-| inp            | ❌                   | ❌             | Removes a tuple                |
-| rdp            | ❌                   | ❌             | Copies a tuple                 |
-| nop            | ❌                   | ❌             | Checks if tuples do not exists |
-| outAll         | ❌                   | ✔️            | Inserts multiple tuples        |
-| inAll          | ❌                   | ✔️            | Removes multiple tuples        |
-| rdAll          | ❌                   | ✔️            | Reads multiple tuples          |
+| out            | no                  | no            | Inserts a tuple                |
+| in             | yes                 | no            | Removes a tuple                |
+| rd             | yes                 | no            | Copies a tuple                 |
+| no             | yes                 | no            | Checks if tuples do not exist  |
+| inp            | no                  | no            | Removes a tuple                |
+| rdp            | no                  | no            | Copies a tuple                 |
+| nop            | no                  | no            | Checks if tuples do not exist  |
+| outAll         | no                  | yes           | Inserts multiple tuples        |
+| inAll          | no                  | yes           | Removes multiple tuples        |
+| rdAll          | no                  | yes           | Reads multiple tuples          |
 
 Except for the "out" and "outAll" operations, all of them take a template to work. This template is used for matching the tuple or
 tuples for the operation in the tuple space. The "suspensive" operations are operations that suspend in case no tuple matching
