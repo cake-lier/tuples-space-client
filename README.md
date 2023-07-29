@@ -16,7 +16,7 @@
 Add the following line to your `build.sbt` file:
 
 ```scala 3
-libraryDependencies ++= Seq("io.github.cake-lier" % "tuples-space-client" % "1.0.0")
+libraryDependencies ++= Seq("io.github.cake-lier" % "tuples-space-client" % "1.0.1")
 ```
 
 This library is currently available only for scala 3.
