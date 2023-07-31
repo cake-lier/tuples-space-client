@@ -165,9 +165,8 @@ class JsonTupleSpaceTest extends AnyFunSpec with BeforeAndAfterAll with Eventual
                           }
                         case t: SeqTupleRequest => TextMessage(SeqTupleResponse(t.content).asJson.noSpaces) :: Nil
                         case t: MergeRequest =>
-                          t.clientId shouldBe secondUUID
                           t.oldClientId shouldBe firstUUID
-                          TextMessage(MergeSuccessResponse(t.clientId, t.oldClientId).asJson.noSpaces) :: Nil
+                          TextMessage(MergeSuccessResponse(t.oldClientId).asJson.noSpaces) :: Nil
                       }
                     } yield r).toOption.getOrElse(Nil)
                   case m => Nil

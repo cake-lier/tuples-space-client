@@ -66,7 +66,6 @@ private[client] object RequestSerializer {
     /* The Encoder given instance for the MergeRequest trait. */
   private given Encoder[MergeRequest] = r =>
     Json.obj(
-      "clientId" -> r.clientId.asJson,
       "oldClientId" -> r.oldClientId.asJson
     )
 

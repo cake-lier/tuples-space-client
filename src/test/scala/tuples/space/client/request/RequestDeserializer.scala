@@ -83,7 +83,7 @@ object RequestDeserializer {
       }
     } yield TemplateRequest(content, tpe)
 
-  private given Decoder[MergeRequest] = Decoder.forProduct2("clientId", "oldClientId")(MergeRequest.apply)
+  private given Decoder[MergeRequest] = Decoder.forProduct1("oldClientId")(MergeRequest.apply)
 
   given Decoder[Request] = r =>
     r.as[TupleRequest]

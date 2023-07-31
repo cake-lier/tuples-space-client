@@ -25,27 +25,20 @@ package tuples.space.client
 import java.util.UUID
 
 import scala.collection.mutable
-import scala.concurrent.ExecutionContextExecutor
 import scala.concurrent.Future
 import scala.concurrent.Promise
 import scala.concurrent.duration.DurationInt
 import scala.util.Failure
-import scala.util.Success
 
 import akka.Done
 import akka.NotUsed
 import akka.actor.ActorSystem
-import akka.actor.typed.ActorRef
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.HttpExt
-import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.model.ws.*
 import akka.stream.OverflowStrategy
-import akka.stream.QueueCompletionResult
 import akka.stream.QueueOfferResult
 import akka.stream.RestartSettings
-import akka.stream.scaladsl.Flow
-import akka.stream.scaladsl.Keep
 import akka.stream.scaladsl.RestartFlow
 import akka.stream.scaladsl.Sink
 import akka.stream.scaladsl.Source
@@ -53,12 +46,12 @@ import akka.stream.scaladsl.SourceQueueWithComplete
 import io.circe.parser.*
 import io.circe.syntax.*
 
+import AnyOps.*
 import tuples.space.*
 import tuples.space.client.request.*
-import request.RequestSerializer.given
+import tuples.space.client.request.RequestSerializer.given
 import tuples.space.client.response.*
-import response.ResponseDeserializer.given
-import AnyOps.*
+import tuples.space.client.response.ResponseDeserializer.given
 
 /** A coordination medium to be used to exchange pieces of information and coordinate with other entities, implemented to be used
   * with [[JsonTuple]]s and [[JsonTemplate]]s.
@@ -308,7 +301,7 @@ object JsonTupleSpace {
             synchronized {
               clientId match {
                 case Some(id) =>
-                  queue.offer(TextMessage((MergeRequest(r.clientId, id): Request).asJson.noSpaces)).foreach {
+                  queue.offer(TextMessage((MergeRequest(id): Request).asJson.noSpaces)).foreach {
                     case QueueOfferResult.Enqueued => ()
                     case QueueOfferResult.Dropped =>
                       connectionCompletion.failure(IllegalStateException("The request was dropped from its queue."))
@@ -345,11 +338,25 @@ object JsonTupleSpace {
         })
     flowCompletion.onComplete(_ => synchronized { failAllRemaining() })
 
-    private def failAllRemaining(): Unit =
-      Seq(tupleRequests, templateRdRequests, templateInRequests, templateNoRequests)
+    private def failAllRemaining(): Unit = {
+      val requests = Seq(
+        tupleRequests,
+        templateRdRequests,
+        templateInRequests,
+        templateNoRequests,
+        templateRdpRequests,
+        templateInpRequests,
+        templateNopRequests,
+        templateRdAllRequests,
+        templateInAllRequests,
+        tupleSeqRequests
+      )
+      requests
         .flatten
         .map(_._2)
         .foreach(_.failure(IllegalStateException("The queue was completed.")))
+      requests.foreach(_.clear())
+    }
 
     private def completeRequest[A, B](
       request: A,

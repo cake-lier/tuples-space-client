@@ -144,10 +144,7 @@ private[client] object Request {
     */
   sealed trait MergeRequest extends Request {
 
-      /** Returns the current client id of the client that sent this [[Request]]. */
-    val clientId: UUID
-
-    /** Returns the client id of the client that sent this [[Request]] before it was forced to disconnect. */
+      /** Returns the client id of the client that sent this [[Request]] before it was forced to disconnect. */
     val oldClientId: UUID
   }
 
@@ -155,19 +152,17 @@ private[client] object Request {
   object MergeRequest {
 
     /* Implementation of the MergeRequest trait. */
-    final private case class MergeRequestImpl(clientId: UUID, oldClientId: UUID) extends MergeRequest
+    final private case class MergeRequestImpl(oldClientId: UUID) extends MergeRequest
 
-      /** Creates a new instance of the [[MergeRequest]] trait, given the current id and the id before the disconnection of the
-        * client that sent this [[MergeRequest]].
+      /** Creates a new instance of the [[MergeRequest]] trait, given the id before the disconnection of the client that sent this
+        * [[MergeRequest]].
         *
-        * @param clientId
-        *   the current id of the client that sent this [[MergeRequest]]
         * @param oldClientId
         *   the id of the client that sent this [[MergeRequest]] before it was forced to disconnect
         * @return
         *   a new [[MergeRequest]] instance
         */
-    def apply(clientId: UUID, oldClientId: UUID): MergeRequest = MergeRequestImpl(clientId, oldClientId)
+    def apply(oldClientId: UUID): MergeRequest = MergeRequestImpl(oldClientId)
   }
 }
 

@@ -160,7 +160,7 @@ private[client] object ResponseDeserializer {
 
   /* The Decoder given instance for the MergeSuccessResponse trait. */
   private given Decoder[MergeSuccessResponse] =
-    Decoder.forProduct2("newClientId", "oldClientId")(MergeSuccessResponse.apply)
+    Decoder.forProduct1("oldClientId")(MergeSuccessResponse.apply)
 
     /** The [[Decoder]] given instance for the general [[Response]] trait, working for all of its sub-types. */
   given Decoder[Response] = r =>

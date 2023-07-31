@@ -94,9 +94,5 @@ object ResponseSerializer {
       "clientId" -> r.clientId.asJson
     )
 
-  given Encoder[MergeSuccessResponse] = r =>
-    Json.obj(
-      "newClientId" -> r.newClientId.asJson,
-      "oldClientId" -> r.oldClientId.asJson
-    )
+  given Encoder[MergeSuccessResponse] = r => Json.obj("oldClientId" -> r.oldClientId.asJson)
 }
