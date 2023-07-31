@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/cake-lier/tuples-space-client/compare/v1.0.1...v1.0.2) (2023-07-31)
+
+
+### Bug Fixes
+
+* update format for merge request and merge response ([ad593cc](https://github.com/cake-lier/tuples-space-client/commit/ad593cc8470a6aad81921b00e25af9bc06b0da7c))
+
 ## [1.0.1](https://github.com/cake-lier/tuples-space-client/compare/v1.0.0...v1.0.1) (2023-07-29)
 
 
