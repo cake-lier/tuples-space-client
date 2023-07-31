@@ -2,7 +2,8 @@
 
 [![Build status](https://github.com/cake-lier/tuples-space-client/actions/workflows/release.yml/badge.svg)](https://github.com/cake-lier/tuples-space-client/actions/workflows/release.yml)
 [![semantic-release: conventional-commits](https://img.shields.io/badge/semantic--release-conventional_commits-e10098?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
-[![Latest release](https://img.shields.io/github/v/release/cake-lier/tuples-space-client)](https://github.com/cake-lier/tuples-space-client/releases/latest/)
+[![GitHub](https://img.shields.io/github/license/cake-lier/tuples-space-client)](https://github.com/cake-lier/tuples-space-client/blob/main/LICENSE.md)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.cake-lier/tuples-space-client_3?label=maven%20central)](https://central.sonatype.com/artifact/io.github.cake-lier/tuples-space-client_3)
 [![Scaladoc](https://img.shields.io/github/v/release/cake-lier/tuples-space-client?label=scaladoc)](https://cake-lier.github.io/tuples-space-client/io/github/cakelier)
 [![Issues](https://img.shields.io/github/issues/cake-lier/tuples-space-client)](https://github.com/cake-lier/tuples-space-client/issues)
 [![Pull requests](https://img.shields.io/github/issues-pr/cake-lier/tuples-space-client)](https://github.com/cake-lier/tuples-space-client/pulls)
@@ -35,8 +36,9 @@ pool of messages, waiting to be read from someone or probed or whatever. Differe
 topics, because every receive operation is intended to receive one and only one message.
 
 This repo contains only the client part of this project: the library for communicating with the server from inside your app. The
-core elements, such as tuples and templates, are discussed in the corresponding repo. Another repo exists which gives an
-implementation to the tuple space server, which the clients can interact with.
+core elements, such as tuples and templates, are discussed in the corresponding repo, which is
+[here](https://github.com/cake-lier/tuples-space-core). Another repo exists which gives an implementation to the tuple space
+server, which the clients can interact with, and it's [here](https://github.com/cake-lier/tuples-space-server).
 
 ## What operations are available then?
 
