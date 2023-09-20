@@ -12,7 +12,7 @@ object Dependencies {
 
   lazy val circeParser = "io.circe" %% "circe-parser" % "0.14.5"
 
-  lazy val akka = "com.typesafe.akka" %% "akka-actor-typed" % "2.8.3"
+  lazy val akka = "com.typesafe.akka" %% "akka-actor-typed" % "2.8.5"
 
   lazy val akkaStream = "com.typesafe.akka" %% "akka-stream-typed" % "2.8.3"
 
