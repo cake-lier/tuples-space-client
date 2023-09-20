@@ -18,7 +18,7 @@ object Dependencies {
 
   lazy val akkaHttp = "com.typesafe.akka" %% "akka-http" % "10.5.2"
 
-  lazy val akkaStreamTestkit = "com.typesafe.akka" %% "akka-stream-testkit" % "2.8.3" % Test
+  lazy val akkaStreamTestkit = "com.typesafe.akka" %% "akka-stream-testkit" % "2.8.5" % Test
 
   lazy val akkaHttpTestkit = "com.typesafe.akka" %% "akka-http-testkit" % "10.5.2" % Test
 
