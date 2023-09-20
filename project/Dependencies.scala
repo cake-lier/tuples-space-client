@@ -22,7 +22,7 @@ object Dependencies {
 
   lazy val akkaHttpTestkit = "com.typesafe.akka" %% "akka-http-testkit" % "10.5.2" % Test
 
-  lazy val akkaTestkit = "com.typesafe.akka" %% "akka-actor-testkit-typed" % "2.8.3" % Test
+  lazy val akkaTestkit = "com.typesafe.akka" %% "akka-actor-testkit-typed" % "2.8.5" % Test
 
   lazy val core = "io.github.cake-lier" %% "tuples-space-core" % "1.0.2"
 }
