@@ -6,7 +6,7 @@ object Dependencies {
 
   lazy val scalatest: ModuleID = "org.scalatest" %% "scalatest" % "3.2.16" % Test
 
-  lazy val circeCore = "io.circe" %% "circe-core" % "0.14.5"
+  lazy val circeCore = "io.circe" %% "circe-core" % "0.14.16"
 
   lazy val circeGeneric = "io.circe" %% "circe-generic" % "0.14.5"
 
