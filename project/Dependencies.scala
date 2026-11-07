@@ -8,7 +8,7 @@ object Dependencies {
 
   lazy val circeCore = "io.circe" %% "circe-core" % "0.14.5"
 
-  lazy val circeGeneric = "io.circe" %% "circe-generic" % "0.14.5"
+  lazy val circeGeneric = "io.circe" %% "circe-generic" % "0.14.17"
 
   lazy val circeParser = "io.circe" %% "circe-parser" % "0.14.5"
 
